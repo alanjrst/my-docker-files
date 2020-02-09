@@ -1,0 +1,31 @@
+version: '3.3'
+volumes:
+  data:
+services:
+  db:
+    container_name: mysql
+    image: mysql:5.6
+    ports:
+      - "3306:3306"
+    volumes:
+      - data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=PASSWORD
+      - MYSQL_DATABASE=app_development
+  phpadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    links:
+      - db
+    ports:
+      - 80:80
+    environment:
+      - PMA_ARBITRARY=1
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - 27017:27017
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: PASSWORD
